@@ -1,6 +1,10 @@
-public class Player {
+import java.util.ArrayList;
+
+public class Player implements Subject
+{
 	protected int x;
 	protected int y;
+	protected ArrayList<Observer> observers = new ArrayList<Observer>();
 	   
 	public Player()
 	{
@@ -38,5 +42,25 @@ public class Player {
 	{
 	   this.x += xDistance;
 	   this.y += yDistance;
+	   
+	   notifyObservers();
+	}
+
+	@Override
+	public void register(Observer observer) {
+		observers.add(observer);
+	}
+
+	@Override
+	public void unregister(Observer observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public void notifyObservers() {
+		for (int i = 0; i < observers.size(); ++i)
+		{
+			observers.get(i).update();
+		}
 	}
 }
