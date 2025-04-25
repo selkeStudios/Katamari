@@ -11,16 +11,6 @@ public class Driver
 		Player p2 = new Player();
 		
 		GUI gui = new GUI(p1, p2);
-		
-	    while (true)
-	    {
-	        runGame();
-	    }
-	}
-	
-	public static void runGame()
-	{
-		
 	}
 
 }

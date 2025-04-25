@@ -1,18 +1,20 @@
 import java.util.ArrayList;
+import java.awt.event.KeyEvent;
 
 public class Player implements Subject
 {
 	protected int x;
 	protected int y;
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
+	protected ArrayList<KeyEvent> keys = new ArrayList<KeyEvent>();
 	   
-	public Player()
+	public Player(KeyEvent left, KeyEvent right, KeyEvent up, KeyEvent down)
 	{
 		this.x = 0;
 		this.y = 0;
 	}
 
-	public Player(int x, int y)
+	public Player(int x, int y, KeyEvent left, KeyEvent right, KeyEvent up, KeyEvent down)
 	{
 	   this.x = x;
 	   this.y = y;
