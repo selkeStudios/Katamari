@@ -6,18 +6,28 @@ public class Player implements Subject
 	protected int x;
 	protected int y;
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
-	protected ArrayList<KeyEvent> keys = new ArrayList<KeyEvent>();
+	private int[] keys = new int[4];
 	   
-	public Player(KeyEvent left, KeyEvent right, KeyEvent up, KeyEvent down)
+	public Player(int left, int right, int up, int down)
 	{
 		this.x = 0;
 		this.y = 0;
+		
+		this.keys[0] = left;
+	    this.keys[1] = right;
+	    this.keys[2] = up;
+	    this.keys[3] = down;
 	}
 
-	public Player(int x, int y, KeyEvent left, KeyEvent right, KeyEvent up, KeyEvent down)
+	public Player(int x, int y, int left, int right, int up, int down)
 	{
 	   this.x = x;
 	   this.y = y;
+	   
+	   this.keys[0] = left;
+	   this.keys[1] = right;
+	   this.keys[2] = up;
+	   this.keys[3] = down;
 	}
 
 	public void setX(int x)
@@ -46,6 +56,11 @@ public class Player implements Subject
 	   this.y += yDistance;
 	   
 	   notifyObservers();
+	}
+	
+	public int getPlayerKey(int index)
+	{
+		return keys[index];
 	}
 
 	@Override

@@ -11,21 +11,21 @@ public class PlayerController implements KeyListener
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		player.move(0, 0);
-	      if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-	      {
-	    	  player.move(5, 0);
-	      }
-	      else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+	public void keyPressed(KeyEvent e) 
+	{
+	      if (e.getKeyCode() == player.getPlayerKey(0))
 	      {
 	    	  player.move(-5, 0);
 	      }
-	      else if (e.getKeyCode() == KeyEvent.VK_UP)
+	      else if (e.getKeyCode() == player.getPlayerKey(1))
+	      {
+	    	  player.move(5, 0);
+	      }
+	      else if (e.getKeyCode() == player.getPlayerKey(2))
 	      {
 	    	  player.move(0, -5);
 	      }
-	      else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+	      else if (e.getKeyCode() == player.getPlayerKey(3))
 	      {
 	    	  player.move(0, 5);
 	      }
@@ -36,9 +36,7 @@ public class PlayerController implements KeyListener
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent e) {		
 	}
 	
 }
