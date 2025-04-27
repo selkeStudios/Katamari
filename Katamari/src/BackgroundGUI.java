@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 
-public class BackgroundGUI extends JPanel implements ActionListener {
-
+public class BackgroundGUI extends JPanel implements ActionListener, Observer
+{
     private static final int WINWIDTH = 640;
     private static final int WINHEIGHT = 480;
     private static final int FPS = 30;
@@ -17,8 +17,24 @@ public class BackgroundGUI extends JPanel implements ActionListener {
     private Image[] grassImages; 
     private Timer timer;
     private Random random;
-
-    public BackgroundGUI() {
+    
+	Player p1;
+	Player p2;
+	
+	PlayerController pC1;
+	PlayerController pC2;
+	
+    public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) 
+    {	
+		this.p1 = p1;
+		this.p2 = p2;
+		
+		this.pC1 = pC1;
+		this.pC2 = pC2;
+		
+		p1.register(this);
+		p2.register(this);
+    	
         setPreferredSize(new Dimension(WINWIDTH, WINHEIGHT));
         setBackgroundColor();
         setFocusable(true);
@@ -47,22 +63,27 @@ public class BackgroundGUI extends JPanel implements ActionListener {
 		
 	}
 
-//	public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame frame = new JFrame("Squirrel Eat Squirrel");
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            try {
-//                frame.setIconImage(ImageIO.read(new URL("https://inventwithpython.com/gameicon.png")));
-//            } catch (IOException e) {
-//                System.err.println("Error loading game icon from the web: " + e.getMessage());
-//                // Handle icon loading error
-//            }
-//            frame.getContentPane().add(new BackgroundGUI());
-//            frame.pack();
-//            frame.setLocationRelativeTo(null);
-//            frame.setVisible(true);
-//        });
-//    }
+	public void createGame() {
+        SwingUtilities.invokeLater(() -> {   
+        	JFrame frame = new JFrame("Katamari");
+        	
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            try {
+                frame.setIconImage(ImageIO.read(new URL("https://inventwithpython.com/gameicon.png")));
+            } catch (IOException e) {
+                System.err.println("Error loading game icon from the web: " + e.getMessage());
+                // Handle icon loading error
+            }
+            
+            this.addKeyListener(pC1);
+            this.addKeyListener(pC2);
+            
+            frame.getContentPane().add(this);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -70,10 +91,11 @@ public class BackgroundGUI extends JPanel implements ActionListener {
         drawGrass(g);
         // Draw squirrels and other game elements here
         if (leftSquirrelImg != null) {
-            g.drawImage(leftSquirrelImg, 50, 50, this);
+            g.drawImage(leftSquirrelImg, this.p1.getX(), this.p1.getY(), this);
+            
         }
         if (rightSquirrelImg != null) {
-            g.drawImage(rightSquirrelImg, 150, 50, this);
+            g.drawImage(rightSquirrelImg, this.p2.getX(), this.p2.getY(), this);
         }
 
         g.setFont(new Font("Arial", Font.BOLD, 32));
@@ -96,6 +118,14 @@ public class BackgroundGUI extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        pC1.updatePlayer();
+        pC2.updatePlayer();
+        
         repaint(); 
     }
+
+	@Override
+	public void update() {
+		this.repaint();
+	}
 }
