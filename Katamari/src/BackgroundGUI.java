@@ -24,6 +24,8 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
 	PlayerController pC1;
 	PlayerController pC2;
 	
+	Ball ball;
+	
     public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) 
     {	
 		this.p1 = p1;
@@ -34,6 +36,10 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
 		
 		p1.register(this);
 		p2.register(this);
+		
+		this.ball = new Ball(320, 240, this.p1, this.p2);
+		
+		ball.register(this);
     	
         setPreferredSize(new Dimension(WINWIDTH, WINHEIGHT));
         setBackgroundColor();
@@ -89,10 +95,16 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawGrass(g);
+        
+        ball.checkCollisions(p1);
+        ball.checkCollisions(p2);
+        
+    	g.setColor(Color.RED);
+	    g.fillOval(this.ball.getX(), this.ball.getY(), this.ball.getScale(), this.ball.getScale());
+	    
         // Draw squirrels and other game elements here
         if (leftSquirrelImg != null) {
             g.drawImage(leftSquirrelImg, this.p1.getX(), this.p1.getY(), this);
-            
         }
         if (rightSquirrelImg != null) {
             g.drawImage(rightSquirrelImg, this.p2.getX(), this.p2.getY(), this);
@@ -120,6 +132,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     public void actionPerformed(ActionEvent e) {
         pC1.updatePlayer();
         pC2.updatePlayer();
+        ball.updateBall();
         
         repaint(); 
     }
