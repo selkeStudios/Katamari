@@ -3,7 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 public class BackgroundGUI extends JPanel implements ActionListener, Observer
@@ -18,15 +19,15 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     private Timer timer;
     private Random random;
     
-	Player p1;
-	Player p2;
-	
-	PlayerController pC1;
-	PlayerController pC2;
-	
-	Ball ball;
-	
-    public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) 
+    Player p1;
+    Player p2;
+    
+    PlayerController pC1;
+    PlayerController pC2;
+    
+    Ball ball;
+    
+    public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) throws URISyntaxException 
     {	
 		this.p1 = p1;
 		this.p2 = p2;
@@ -46,18 +47,14 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
         setFocusable(true);
         requestFocusInWindow();
 
-        grassImages = new Image[0]; // Initialize with an empty array in case of failure
+        grassImages = new Image[0];
 
         try {
-            // Load images from the web
-            leftSquirrelImg = ImageIO.read(new URL("https://inventwithpython.com/squirrel.png"));
-            rightSquirrelImg = ImageIO.read(new URL("https://inventwithpython.com/squirrel.png"));
-            grassImages = new Image[2];
-            grassImages[0] = ImageIO.read(new URL("https://inventwithpython.com/grass1.png"));
-            grassImages[1] = ImageIO.read(new URL("https://inventwithpython.com/grass2.png"));
+            leftSquirrelImg = ImageIO.read(new URI("https://inventwithpython.com/squirrel.png").toURL());
+            rightSquirrelImg = ImageIO.read(new URI("https://inventwithpython.com/squirrel.png").toURL());
+            
         } catch (IOException e) {
             System.err.println("Error loading images from the web: " + e.getMessage());
-            // grassImages is already an empty array, so no further action needed here
         }
 
         random = new Random();
@@ -74,12 +71,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
         	JFrame frame = new JFrame("Katamari");
         	
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            try {
-                frame.setIconImage(ImageIO.read(new URL("https://inventwithpython.com/gameicon.png")));
-            } catch (IOException e) {
-                System.err.println("Error loading game icon from the web: " + e.getMessage());
-                // Handle icon loading error
-            }
+           
             
             this.addKeyListener(pC1);
             this.addKeyListener(pC2);
@@ -102,7 +94,6 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     	g.setColor(Color.RED);
 	    g.fillOval(this.ball.getX(), this.ball.getY(), this.ball.getScale(), this.ball.getScale());
 	    
-        // Draw squirrels and other game elements here
         if (leftSquirrelImg != null) {
             g.drawImage(leftSquirrelImg, this.p1.getX(), this.p1.getY(), this);
         }
@@ -115,8 +106,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     }
 
     private void drawGrass(Graphics g) {
-        // Example: Draw random grass patches
-        if (grassImages != null && grassImages.length > 0) { // Check if grassImages has elements
+        if (grassImages != null && grassImages.length > 0) { 
             for (int i = 0; i < 10; i++) {
                 int x = random.nextInt(WINWIDTH);
                 int y = random.nextInt(WINHEIGHT);
