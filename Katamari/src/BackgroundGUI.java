@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Random;
 import java.util.ArrayList;
 
 
@@ -13,13 +12,10 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
 {
     private static final int WINWIDTH = 640;
     private static final int WINHEIGHT = 480;
-    private static final int FPS = 30;
 
     private Image leftSquirrelImg;
     private Image rightSquirrelImg;
-    private Image[] grassImages; 
-    private Timer timer;
-    private Random random;
+   
     
     Player p1;
     Player p2;
@@ -48,7 +44,6 @@ private static final int NUM_OBSTACLES = 30;
 		ball.register(this);
     	
         setPreferredSize(new Dimension(WINWIDTH, WINHEIGHT));
-        setBackgroundColor();
         setFocusable(true);
         requestFocusInWindow();
 
@@ -60,9 +55,7 @@ private static final int NUM_OBSTACLES = 30;
             System.err.println("Error loading images from the web: " + e.getMessage());
         }
 
-        random = new Random();
-        timer = new Timer(5000 / FPS, this);
-        timer.start();
+        
 
         obstacles = new ArrayList<>();
 for (int i = 0; i < NUM_OBSTACLES; i++) {
@@ -71,10 +64,7 @@ for (int i = 0; i < NUM_OBSTACLES; i++) {
 
     }
 
-    private void setBackgroundColor() {
-		
-	}
-
+  
 	public void createGame() {
         SwingUtilities.invokeLater(() -> {   
         	JFrame frame = new JFrame("Katamari");
@@ -95,7 +85,6 @@ for (int i = 0; i < NUM_OBSTACLES; i++) {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawGrass(g);
        
         g.setColor(new Color(52, 99, 49));
         g.fillRect(0, 0, WINWIDTH, WINHEIGHT); 
@@ -122,18 +111,7 @@ for (int i = 0; i < NUM_OBSTACLES; i++) {
         g.setColor(Color.BLACK);
     }
 
-    private void drawGrass(Graphics g) {
-        if (grassImages != null && grassImages.length > 0) { 
-            for (int i = 0; i < 10; i++) {
-                int x = random.nextInt(WINWIDTH);
-                int y = random.nextInt(WINHEIGHT);
-                int grassIndex = random.nextInt(grassImages.length);
-                if (grassIndex < grassImages.length && grassImages[grassIndex] != null) {
-                    g.drawImage(grassImages[grassIndex], x, y, this);
-                }
-            }
-        }
-    }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
