@@ -1,4 +1,6 @@
+import java.awt.Dimension;
 import java.awt.event.KeyListener;
+import java.net.URISyntaxException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -34,7 +36,14 @@ public class GUI
 	   
 	   mainPanel.add(playerDrawing1);
 	   mainPanel.add(playerDrawing2);
-	   
+	    try {
+        BackgroundGUI background = new BackgroundGUI(p1, p2, (PlayerController)k1, (PlayerController)k2);
+        background.setPreferredSize(new Dimension(640, 480)); // Size if needed
+		background.createGame();
+        mainPanel.add(background); // Add it to mainPanel
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    }
 	   mainFrame.addKeyListener(k1);
 	   mainFrame.addKeyListener(k2);
 

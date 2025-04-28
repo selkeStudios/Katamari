@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Ball implements Subject
@@ -87,6 +88,16 @@ public class Ball implements Subject
 			observers.get(i).update();
 		}
 	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, scale, scale);
+	}
+	
+	
+	public boolean isHeldBy(Player p) {
+        Rectangle playerBounds = new Rectangle(p.getX(), p.getY(), 3, 3); 
+        return playerBounds.intersects(this.getBounds());
+    }
 	
 	public void checkCollisions(Player p)
 	{
