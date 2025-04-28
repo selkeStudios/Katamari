@@ -58,9 +58,12 @@ private static final int NUM_OBSTACLES = 30;
         
 
         obstacles = new ArrayList<>();
-for (int i = 0; i < NUM_OBSTACLES; i++) {
-    obstacles.add(new Obstacle(WINWIDTH, WINHEIGHT));
-}
+      for (int i = 0; i < NUM_OBSTACLES; i++) {
+       obstacles.add(new Obstacle(WINWIDTH, WINHEIGHT));
+    }
+
+     Timer timer = new Timer(30, this); 
+     timer.start();
 
     }
 
