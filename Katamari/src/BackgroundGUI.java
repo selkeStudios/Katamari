@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
+import java.util.ArrayList;
+
 
 public class BackgroundGUI extends JPanel implements ActionListener, Observer
 {
@@ -26,6 +28,9 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     PlayerController pC2;
     
     Ball ball;
+    private ArrayList<Obstacle> obstacles;
+private static final int NUM_OBSTACLES = 30;
+
     
     public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) throws URISyntaxException 
     {	
@@ -47,8 +52,6 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
         setFocusable(true);
         requestFocusInWindow();
 
-        grassImages = new Image[0];
-
         try {
             leftSquirrelImg = ImageIO.read(new URI("https://inventwithpython.com/squirrel.png").toURL());
             rightSquirrelImg = ImageIO.read(new URI("https://inventwithpython.com/squirrel.png").toURL());
@@ -60,6 +63,12 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
         random = new Random();
         timer = new Timer(5000 / FPS, this);
         timer.start();
+
+        obstacles = new ArrayList<>();
+for (int i = 0; i < NUM_OBSTACLES; i++) {
+    obstacles.add(new Obstacle(WINWIDTH, WINHEIGHT));
+}
+
     }
 
     private void setBackgroundColor() {
@@ -87,12 +96,20 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawGrass(g);
+       
+        g.setColor(new Color(52, 99, 49));
+        g.fillRect(0, 0, WINWIDTH, WINHEIGHT); 
         
         ball.checkCollisions(p1);
         ball.checkCollisions(p2);
         
     	g.setColor(Color.RED);
 	    g.fillOval(this.ball.getX(), this.ball.getY(), this.ball.getScale(), this.ball.getScale());
+
+        for (Obstacle o : obstacles) {
+            o.draw(g, this);
+        }
+        
 	    
         if (leftSquirrelImg != null) {
             g.drawImage(leftSquirrelImg, this.p1.getX(), this.p1.getY(), this);
@@ -123,9 +140,38 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer
         pC1.updatePlayer();
         pC2.updatePlayer();
         ball.updateBall();
+
+        for (Obstacle o : obstacles) {
+            o.move(WINWIDTH, WINHEIGHT);
+        }
+        
+        checkObstacleCollisions();
         
         repaint(); 
     }
+
+    private void checkObstacleCollisions() {
+        boolean ballHeldByPlayer = ball.isHeldBy(p1) || ball.isHeldBy(p2);
+    
+        if (!ballHeldByPlayer) {
+            return; 
+        }
+    
+        ArrayList<Obstacle> collected = new ArrayList<>();
+    
+        for (Obstacle o : obstacles) {
+            if (ball.getBounds().intersects(o.getBounds())) {
+                collected.add(o);
+            }
+        }
+    
+        obstacles.removeAll(collected);
+    }
+
+  
+    
+    
+    
 
 	@Override
 	public void update() {
