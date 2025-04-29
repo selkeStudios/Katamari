@@ -7,7 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-public class BackgroundGUI extends JPanel implements ActionListener, Observer {
+public class BackgroundGUI extends JPanel implements ActionListener, Observer, ScoreListener {
     private static final int WINWIDTH = 640;
     private static final int WINHEIGHT = 480;
 
@@ -21,22 +21,26 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
     PlayerController pC2;
 
     Ball ball;
+
     private ArrayList<Obstacle> obstacles;
     private static final int NUM_OBSTACLES = 30;
     private GameTimer gameTimer;
+    private ScoreBoard scoreBoard;
 
-    public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2) throws URISyntaxException {
+    public BackgroundGUI(Player p1, Player p2, PlayerController pC1, PlayerController pC2, ScoreBoard scoreBoard)
+            throws URISyntaxException {
         this.p1 = p1;
         this.p2 = p2;
+        this.scoreBoard = scoreBoard;
 
         this.pC1 = pC1;
         this.pC2 = pC2;
 
         p1.register(this);
         p2.register(this);
+        this.scoreBoard.addScoreListener(this);
 
-        this.ball = new Ball(320, 240, this.p1, this.p2);
-
+        this.ball = new Ball(320, 240, this.p1, this.p2, this.scoreBoard);
         ball.register(this);
 
         setPreferredSize(new Dimension(WINWIDTH, WINHEIGHT));
@@ -56,7 +60,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
             obstacles.add(new Obstacle(WINWIDTH, WINHEIGHT));
         }
 
-        Timer timer = new Timer(30, this); 
+        Timer timer = new Timer(30, this);
         timer.start();
 
         // Starting the timer
@@ -105,10 +109,11 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
             g.drawImage(rightSquirrelImg, this.p2.getX(), this.p2.getY(), this);
         }
 
-        g.setFont(new Font("Arial", Font.BOLD, 32));
+        g.setFont(new Font("Monospaced", Font.BOLD, 32));
         g.setColor(Color.BLACK);
 
         g.drawString(gameTimer.getFormattedTime(), WINWIDTH - 120, 30);
+        drawScoreBoard(g);
     }
 
     @Override
@@ -139,6 +144,12 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
         for (Obstacle o : obstacles) {
             if (ball.getBounds().intersects(o.getBounds())) {
                 collected.add(o);
+
+                if (ball.isHeldBy(p1)) {
+                    scoreBoard.incrementPlayer1Score(10);
+                } else {
+                    scoreBoard.incrementPlayer2Score(10);
+                }
             }
         }
 
@@ -148,5 +159,27 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
     @Override
     public void update() {
         this.repaint();
+    }
+
+    private void drawScoreBoard(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        // Player 1 Score (left side)
+        g.setColor(Color.RED);
+        String p1Text = "Player 1 - " + scoreBoard.getPlayer1Score();
+        g.drawString(p1Text, 20, 30);
+
+        // Player 2 Score(right side)
+        String p2Text = "Player 2 - " + scoreBoard.getPlayer2Score();
+        // int p2Width = g2d.getFontMetrics().stringWidth(p2Text);
+        g2d.setColor(Color.BLUE);
+        g2d.drawString(p2Text, 20, 60);
+    }
+
+    @Override
+    public void scoreChanged(int p1, int p2) {
+        repaint();
     }
 }

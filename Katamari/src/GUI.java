@@ -37,7 +37,7 @@ public class GUI
 	   mainPanel.add(playerDrawing1);
 	   mainPanel.add(playerDrawing2);
 	    try {
-        BackgroundGUI background = new BackgroundGUI(p1, p2, (PlayerController)k1, (PlayerController)k2);
+        BackgroundGUI background = new BackgroundGUI(p1, p2, (PlayerController)k1, (PlayerController)k2, new ScoreBoard());
         background.setPreferredSize(new Dimension(640, 480)); // Size if needed
 		background.createGame();
         mainPanel.add(background); // Add it to mainPanel
