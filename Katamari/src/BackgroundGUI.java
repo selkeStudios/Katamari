@@ -108,7 +108,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
         g.setFont(new Font("Arial", Font.BOLD, 32));
         g.setColor(Color.BLACK);
 
-        g.drawString(gameTimer.getFormattedTime(), WINWIDTH - 100, 30);
+        g.drawString(gameTimer.getFormattedTime(), WINWIDTH - 120, 30);
     }
 
     @Override
