@@ -114,6 +114,8 @@ private static final int NUM_OBSTACLES = 30;
         g.setColor(Color.BLACK);
     }
 
+    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         pC1.updatePlayer();
@@ -141,12 +143,16 @@ private static final int NUM_OBSTACLES = 30;
         for (Obstacle o : obstacles) {
             if (ball.getBounds().intersects(o.getBounds())) {
                 collected.add(o);
-                ball.dropBall();
             }
         }
     
         obstacles.removeAll(collected);
     }
+
+  
+    
+    
+    
 
 	@Override
 	public void update() {
