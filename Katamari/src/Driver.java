@@ -11,8 +11,8 @@ public class Driver
 		PlayerController pc1 = new PlayerController(p1);
 		PlayerController pc2 = new PlayerController(p2);
 		
-		BackgroundGUI gui = new BackgroundGUI(p1, p2, pc1, pc2);
+		ScoreBoard scoreboard = new ScoreBoard();
+		BackgroundGUI gui = new BackgroundGUI(p1, p2, pc1, pc2, scoreboard);
 		gui.createGame();
 	}
-
 }

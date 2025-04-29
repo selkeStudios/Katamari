@@ -8,20 +8,29 @@ public class Ball implements Subject
 	protected int scale = 25;
 	private boolean hasBeenPickedUpByPlayer;
 	
-	Player p1;
-	Player p2;
+	private Player p1;
+	private Player p2;
 	
-	Player currentPlayerHolding = null;
+	private Player currentPlayerHolding = null;
+	private final ScoreBoard scoreBoard;
 	
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
 	
-	public Ball(int x, int y, Player p1, Player p2)
-	{
+	// public Ball(int x, int y, Player p1, Player p2)
+	// {
+	// 	this.x = x;
+	// 	this.y = y;
+		
+	// 	this.p1 = p1;
+	// 	this.p2 = p2;
+	// }
+
+	public Ball(int x, int y, Player p1, Player p2, ScoreBoard scoreBoard) {
 		this.x = x;
 		this.y = y;
-		
 		this.p1 = p1;
 		this.p2 = p2;
+		this.scoreBoard = scoreBoard;
 	}
 	
 	public int getX()
@@ -109,7 +118,16 @@ public class Ball implements Subject
         if(p.getX() <= x + scale && p.getX() >= x && p.getY() <= y + scale && p.getY() >= y)
         {
         	playerPickedUpBall(p);
+			if (p == p1) {
+				scoreBoard.incrementPlayer1Score(10);
+				p1.addToScore(10);
+			} else {
+				scoreBoard.incrementPlayer2Score(10);
+				p2.addToScore(10);
+			}
         }
+
+		notifyObservers();
 	}
 	
 	public void dropBall()
