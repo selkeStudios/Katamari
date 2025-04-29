@@ -56,6 +56,9 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer {
             obstacles.add(new Obstacle(WINWIDTH, WINHEIGHT));
         }
 
+        Timer timer = new Timer(30, this); 
+        timer.start();
+
         // Starting the timer
         this.gameTimer = new GameTimer();
         this.gameTimer.register(this);

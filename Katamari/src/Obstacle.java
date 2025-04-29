@@ -26,8 +26,8 @@ public class Obstacle {
         this.y = random.nextInt(panelHeight - size);
 
         do {
-            dx = random.nextInt(10) - 1; 
-            dy = random.nextInt(10) - 1;
+            dx = random.nextInt(11) - 5; 
+            dy = random.nextInt(11) - 5;
         } while (dx == 0 && dy == 0);
 
         try {
