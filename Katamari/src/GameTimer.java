@@ -60,7 +60,7 @@ public class GameTimer implements Subject {
         notifyObservers();
     }
 
-    public void reeset(int newTimeInSeconds) {
+    public void reset(int newTimeInSeconds) {
         stop();
         timeRemaining = newTimeInSeconds;
         notifyObservers();

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.awt.event.KeyEvent;
+// import java.awt.event.KeyEvent;
 
 public class Player implements Subject
 {
@@ -7,6 +7,7 @@ public class Player implements Subject
 	protected int y;
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
 	private int[] keys = new int[4];
+	private int score;
 	   
 	public Player(int left, int right, int up, int down)
 	{
@@ -51,6 +52,15 @@ public class Player implements Subject
 	public int getPlayerKey(int index)
 	{
 		return keys[index];
+	}
+
+	public void addToScore(int points) {
+		this.score += points;
+		notifyObservers();
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 	@Override
