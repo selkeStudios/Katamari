@@ -82,6 +82,7 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer, S
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            frame.setResizable(false);
         });
     }
 

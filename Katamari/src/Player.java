@@ -8,6 +8,10 @@ public class Player implements Subject
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
 	private int[] keys = new int[4];
 	private int score;
+	
+	private int maxTopAndLeftBound = 12;
+	private int maxRightBound = 612;
+	private int maxBottomBound = 450;
 	   
 	public Player(int left, int right, int up, int down)
 	{
@@ -78,6 +82,29 @@ public class Player implements Subject
 		for (int i = 0; i < observers.size(); ++i)
 		{
 			observers.get(i).update();
+		}
+	}
+	
+	public void playerPosCheck()
+	{
+		if (this.x <= maxTopAndLeftBound)
+		{
+			this.x = maxTopAndLeftBound;
+		}
+
+		if (this.x >= maxRightBound)
+		{
+			this.x = maxRightBound;
+		}
+		
+		if (this.y <= maxTopAndLeftBound)
+		{
+			this.y = maxTopAndLeftBound;
+		}
+
+		if (this.y >= maxBottomBound)
+		{
+			this.y = maxBottomBound;
 		}
 	}
 }

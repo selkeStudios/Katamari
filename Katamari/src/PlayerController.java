@@ -69,6 +69,8 @@ public class PlayerController implements KeyListener
         if (downPressed) {
             player.move(0, speed);
         }
+        
+        player.playerPosCheck();
 	}
 	
 }
