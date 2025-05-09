@@ -142,16 +142,28 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer, S
 			return;
 		}
 
+		if (!ball.getHasBeenPickedUpByPlayer())
+			return;
+
 		ArrayList<Obstacle> collected = new ArrayList<>();
 
 		for (Obstacle o : obstacles) {
-			if (ball.getBounds().intersects(o.getBounds())) {
-				collected.add(o);
+			if (!ball.getBounds().intersects(o.getBounds()))
+				continue;
 
-				if (ball.isHeldBy(p1)) {
-					scoreBoard.incrementPlayer1Score(10);
-				} else {
-					scoreBoard.incrementPlayer2Score(10);
+			switch (o.getType()) {
+				case GRASS1, GRASS2 -> {}
+				case CARROT -> {
+					addPoints(10);
+					collected.add(o);
+				}
+				case CAT -> {
+					addPoints(30);
+					collected.add(o);
+				}
+				case BOMB -> {
+					JOptionPane.showMessageDialog(this, "💣 Boom! You bumped into a bomb — careful!");
+					ball.dropBall();
 				}
 			}
 		}
@@ -184,5 +196,12 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer, S
 	@Override
 	public void scoreChanged(int p1, int p2) {
 		repaint();
+	}
+	private void addPoints(int points) {
+		if (ball.isHeldBy(p1)) {
+			scoreBoard.incrementPlayer1Score(points);
+		} else if (ball.isHeldBy(p2)) {
+			scoreBoard.incrementPlayer2Score(points);
+		}
 	}
 }
