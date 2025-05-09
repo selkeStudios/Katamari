@@ -1,3 +1,4 @@
+package views;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -5,6 +6,9 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import model.Player;
+import util.Observer;
 
 public class SpriteDrawing extends JPanel implements Icon, Observer
 {

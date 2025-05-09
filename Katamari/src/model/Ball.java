@@ -1,29 +1,24 @@
+package model;
+
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-public class Ball implements Subject
-{
-	protected int x;
-	protected int y;
+import util.Observer;
+import util.Subject;
+
+public class Ball implements Subject {
+	private int x;
+	private int y;
 	protected int scale = 25;
 	private boolean hasBeenPickedUpByPlayer;
-	
+
 	private Player p1;
 	private Player p2;
-	
+
 	private Player currentPlayerHolding = null;
 	private final ScoreBoard scoreBoard;
-	
+
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
-	
-	// public Ball(int x, int y, Player p1, Player p2)
-	// {
-	// 	this.x = x;
-	// 	this.y = y;
-		
-	// 	this.p1 = p1;
-	// 	this.p2 = p2;
-	// }
 
 	public Ball(int x, int y, Player p1, Player p2, ScoreBoard scoreBoard) {
 		this.x = x;
@@ -32,52 +27,52 @@ public class Ball implements Subject
 		this.p2 = p2;
 		this.scoreBoard = scoreBoard;
 	}
-	
-	public int getX()
-	{
+
+	public int getX() {
 		return x;
 	}
-	
-	public int getY()
-	{
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
 		return y;
 	}
-	
-	public int getScale()
-	{
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getScale() {
 		return scale;
 	}
-	
-	public boolean getHasBeenPickedUpByPlayer()
-	{
+
+	public boolean getHasBeenPickedUpByPlayer() {
 		return hasBeenPickedUpByPlayer;
 	}
-	
-	public void playerPickedUpBall(Player p)
-	{
+
+	public void playerPickedUpBall(Player p) {
 		currentPlayerHolding = p;
 		setHasBeenPickedUpByPlayer(true);
 	}
-	
-	public void setHasBeenPickedUpByPlayer(boolean value)
-	{
+
+	public void setHasBeenPickedUpByPlayer(boolean value) {
 		hasBeenPickedUpByPlayer = value;
 	}
-	
-	public void moveWithPlayer()
-	{
+
+	public void moveWithPlayer() {
 		this.x = currentPlayerHolding.getX();
 		this.y = currentPlayerHolding.getY();
-		
+
 		notifyObservers();
 	}
-	
-	public void move(int xDistance, int yDistance)
-	{
-	   this.x += xDistance;
-	   this.y += yDistance;
-	   
-	   notifyObservers();
+
+	public void move(int xDistance, int yDistance) {
+		this.x += xDistance;
+		this.y += yDistance;
+
+		notifyObservers();
 	}
 
 	@Override
@@ -92,8 +87,7 @@ public class Ball implements Subject
 
 	@Override
 	public void notifyObservers() {
-		for (int i = 0; i < observers.size(); ++i)
-		{
+		for (int i = 0; i < observers.size(); ++i) {
 			observers.get(i).update();
 		}
 	}
@@ -101,23 +95,19 @@ public class Ball implements Subject
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, scale, scale);
 	}
-	
-	
+
 	public boolean isHeldBy(Player p) {
-        Rectangle playerBounds = new Rectangle(p.getX(), p.getY(), 3, 3); 
-        return playerBounds.intersects(this.getBounds());
-    }
-	
-	public void checkCollisions(Player p)
-	{
-		if(hasBeenPickedUpByPlayer)
-		{
+		Rectangle playerBounds = new Rectangle(p.getX(), p.getY(), 3, 3);
+		return playerBounds.intersects(this.getBounds());
+	}
+
+	public void checkCollisions(Player p) {
+		if (hasBeenPickedUpByPlayer) {
 			return;
 		}
-		
-        if(p.getX() <= x + scale && p.getX() >= x && p.getY() <= y + scale && p.getY() >= y)
-        {
-        	playerPickedUpBall(p);
+
+		if (p.getX() <= x + scale && p.getX() >= x && p.getY() <= y + scale && p.getY() >= y) {
+			playerPickedUpBall(p);
 			if (p == p1) {
 				scoreBoard.incrementPlayer1Score(10);
 				p1.addToScore(10);
@@ -125,22 +115,19 @@ public class Ball implements Subject
 				scoreBoard.incrementPlayer2Score(10);
 				p2.addToScore(10);
 			}
-        }
+		}
 
 		notifyObservers();
 	}
-	
-	public void dropBall()
-	{
+
+	public void dropBall() {
 		hasBeenPickedUpByPlayer = false;
 		this.y += 20;
 	}
-	
-	public void updateBall()
-	{
-        if(hasBeenPickedUpByPlayer)
-        {
-        	moveWithPlayer();
-        }
+
+	public void updateBall() {
+		if (hasBeenPickedUpByPlayer) {
+			moveWithPlayer();
+		}
 	}
 }
