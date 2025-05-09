@@ -1,9 +1,12 @@
+package model;
+
 import java.util.ArrayList;
+
+import util.ScoreListener;
 
 public class ScoreBoard {
     private int player1Score, player2Score = 0;
     private ArrayList<ScoreListener> listeners = new ArrayList<>();
-
 
     public void incrementPlayer1Score(int points) {
         player1Score += points;
@@ -41,5 +44,5 @@ public class ScoreBoard {
             l.scoreChanged(player1Score, player2Score);
         }
     }
-    
+
 }

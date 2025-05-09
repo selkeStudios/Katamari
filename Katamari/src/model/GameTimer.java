@@ -1,14 +1,18 @@
+package model;
 import java.util.ArrayList;
 
+import util.Observer;
+import util.Subject;
+
 public class GameTimer implements Subject {
-    private static final int DEFAULT_TIME_LIMIT = 180;
+    private static final int DEFAULT_TIME_LIMIT_IN_SECONDS = 60;
     private int timeRemaining;
     private boolean isRunning;
     private long lastUpdateTime;
     private ArrayList<Observer> observers = new ArrayList<>();
 
     public GameTimer() {
-        this(DEFAULT_TIME_LIMIT);
+        this(DEFAULT_TIME_LIMIT_IN_SECONDS);
     }
 
     public GameTimer(int initialTimeInSeconds) {
@@ -56,7 +60,7 @@ public class GameTimer implements Subject {
 
     public void reset() {
         stop();
-        timeRemaining = DEFAULT_TIME_LIMIT;
+        timeRemaining = DEFAULT_TIME_LIMIT_IN_SECONDS;
         notifyObservers();
     }
 

@@ -1,3 +1,5 @@
+package model;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -35,13 +37,6 @@ public class Obstacle {
 			dx = random.nextInt(11) - 5;
 			dy = random.nextInt(11) - 5;
 		} while (dx == 0 && dy == 0);
-
-		// try {
-		// int index = random.nextInt(ObstacleType.values().length);
-		// image = ImageIO.read(new File(IMAGE_PATHS[index]));
-		// } catch (IOException e) {
-		// System.err.println("Error loading obstacle image: " + e.getMessage());
-		// }
 	}
 
 	public void move(int panelWidth, int panelHeight) {
@@ -58,12 +53,6 @@ public class Obstacle {
 	}
 
 	public void draw(Graphics g, JPanel panel) {
-		// if (image != null) {
-		// g.drawImage(image, x, y, SIZE, SIZE, panel);
-		// } else {
-		// g.setColor(Color.MAGENTA);
-		// g.fillOval(x, y, SIZE, SIZE);
-		// }
 		g.drawImage(sprite, x, y, SIZE, SIZE, panel);
 	}
 
