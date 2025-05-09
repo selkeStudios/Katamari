@@ -271,7 +271,6 @@ public class BackgroundGUI extends JPanel implements ActionListener, Observer, S
 					collected.add(o);
 				}
 				case BOMB -> {
-					JOptionPane.showMessageDialog(this, "💣 Boom! You bumped into a bomb — careful!");
 					ball.dropBall();
 				}
 			}

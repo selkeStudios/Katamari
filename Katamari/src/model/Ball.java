@@ -14,6 +14,10 @@ public class Ball implements Subject {
 
 	private Player p1;
 	private Player p2;
+	
+	private int maxTopAndLeftBound = 12;
+	private int maxRightBound = 612;
+	private int maxBottomBound = 450;
 
 	private Player currentPlayerHolding = null;
 	private final ScoreBoard scoreBoard;
@@ -122,12 +126,33 @@ public class Ball implements Subject {
 
 	public void dropBall() {
 		hasBeenPickedUpByPlayer = false;
-		this.y += 20;
+		this.y += 60;
+		ballPosCheck();
 	}
 
 	public void updateBall() {
 		if (hasBeenPickedUpByPlayer) {
 			moveWithPlayer();
+			ballPosCheck();
+		}
+	}
+	
+	public void ballPosCheck()
+	{
+		if (this.x <= maxTopAndLeftBound) {
+			this.x = maxTopAndLeftBound;
+		}
+
+		if (this.x >= maxRightBound) {
+			this.x = maxRightBound;
+		}
+
+		if (this.y <= maxTopAndLeftBound) {
+			this.y = maxTopAndLeftBound;
+		}
+
+		if (this.y >= maxBottomBound) {
+			this.y = maxBottomBound;
 		}
 	}
 }
